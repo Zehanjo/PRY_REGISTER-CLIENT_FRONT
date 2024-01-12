@@ -25,17 +25,17 @@ export class ClientComponent {
   ) {}
 
   async clientRegister() {
-    this.apiTokenService.getToken().then((data) => {
-      console.log('Datos obtenidos:', data);
-      this.token = data.token;
-    });
+      this.apiTokenService.getToken().subscribe((response) => {
+        console.log('Token obtenido:', response.token);
+          this.token = response.token;
+      });
     this.showRegistrationForm = false;
   }
 
   validateToken() {
     this.clientAdd.token = this.token;
     console.log('es valido agregando datos', this.clientAdd);
-    this.apiClientService.createClient(this.clientAdd).then((data) => {
+    this.apiClientService.createClient(this.clientAdd).subscribe((data) => {
       console.log('Datos obtenidos:', data);
       if (data.success) {
         console.log("entro");
@@ -54,7 +54,6 @@ export class ClientComponent {
       this.showRegistrationForm = true;
       this.clientAdd = new Client();
       this.token = '';
-      // this.token = data.token;
     });
   }
 }

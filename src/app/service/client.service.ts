@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { Client } from '../model/Client';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +10,10 @@ import { Client } from '../model/Client';
 export class ClientService {
   private url = 'http://localhost:3000/';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  async createClient( data: Client) {
-    const url = `${this.url}client`;
-    try {
-      const response = await axios.post(url, data);
-      return response.data;
-    } catch (error) {
-      console.error('Error en la solicitud POST:', error);
-      throw error;
-    }
+  createClient(data: Client): Observable<any> {
+    const endpoint = 'client';
+    return this.http.post(`${this.url}${endpoint}`, data);
   }
 }

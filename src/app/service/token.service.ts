@@ -1,6 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import axios from 'axios';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,26 +8,15 @@ import axios from 'axios';
 export class TokenService {
   private url = 'http://localhost:3001/';
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-  async getToken() {
-    try {
-      const response = await axios.post(this.url + 'generate-token');
-      return response.data;
-    } catch (error) {
-      console.error('Error en la solicitud POST:', error);
-      throw error;
-    }
+  getToken(): Observable<any> {
+    const endpoint = 'generate-token';
+    return this.http.post(`${this.url}${endpoint}`, {});
   }
 
-  async validateToken(token: any) {
-    const url = `${this.url}validate-token`;
-    try {
-      const response = await axios.post(url, {token} );
-      return response.data;
-    } catch (error) {
-      console.error('Error en la solicitud POST:', error);
-      throw error;
-    }
+  validateToken(token: any): Observable<any> {
+    const endpoint = 'validate-token';
+    return this.http.post(`${this.url}${endpoint}`, { token });
   }
 }
